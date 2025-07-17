@@ -4,6 +4,33 @@ import { useSelector, useDispatch } from "react-redux";
 import { addCart, delCart } from "../redux/action";
 import { Link } from "react-router-dom";
 
+const CartItem = ({ item, onAdd, onRemove }) => (
+  <div className="cart-item-card p-3 mb-4 bg-white rounded-3 shadow-sm d-flex align-items-center">
+    <div className="me-3 flex-shrink-0 d-flex align-items-center justify-content-center" style={{ width: 110, height: 90, background: '#f8fafc', borderRadius: '12px' }}>
+      <img
+        src={item.image}
+        alt={item.title}
+        style={{ maxWidth: 90, maxHeight: 70, objectFit: 'contain' }}
+      />
+    </div>
+    <div className="flex-grow-1">
+      <div className="d-flex justify-content-between align-items-center mb-2">
+        <span className="fw-bold fs-6 text-dark" style={{ maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.title}</span>
+        <span className="fw-bold text-black-50">${Number(item.price).toFixed(2)}</span>
+      </div>
+      <div className="d-flex align-items-center gap-2">
+        <button className="btn btn-outline-dark btn-sm px-2 py-1" onClick={() => onRemove(item)}>
+          <i className="fas fa-minus"></i>
+        </button>
+        <span className="mx-2 fw-semibold fs-6">{item.qty}</span>
+        <button className="btn btn-outline-dark btn-sm px-2 py-1" onClick={() => onAdd(item)}>
+          <i className="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
   const dispatch = useDispatch();
@@ -37,7 +64,6 @@ const Cart = () => {
     state.map((item) => {
       return (subtotal += item.price * item.qty);
     });
-
     state.map((item) => {
       return (totalItems += item.qty);
     });
@@ -52,72 +78,14 @@ const Cart = () => {
                     <h5 className="mb-0">Item List</h5>
                   </div>
                   <div className="card-body">
-                    {state.map((item) => {
-                      return (
-                        <div key={item.id}>
-                          <div className="row d-flex align-items-center">
-                            <div className="col-lg-3 col-md-12">
-                              <div
-                                className="bg-image rounded"
-                                data-mdb-ripple-color="light"
-                              >
-                                <img
-                                  src={item.image}
-                                  // className="w-100"
-                                  alt={item.title}
-                                  width={100}
-                                  height={75}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="col-lg-5 col-md-6">
-                              <p>
-                                <strong>{item.title}</strong>
-                              </p>
-                              {/* <p>Color: blue</p>
-                              <p>Size: M</p> */}
-                            </div>
-
-                            <div className="col-lg-4 col-md-6">
-                              <div
-                                className="d-flex mb-4"
-                                style={{ maxWidth: "300px" }}
-                              >
-                                <button
-                                  className="btn px-3"
-                                  onClick={() => {
-                                    removeItem(item);
-                                  }}
-                                >
-                                  <i className="fas fa-minus"></i>
-                                </button>
-
-                                <p className="mx-5">{item.qty}</p>
-
-                                <button
-                                  className="btn px-3"
-                                  onClick={() => {
-                                    addItem(item);
-                                  }}
-                                >
-                                  <i className="fas fa-plus"></i>
-                                </button>
-                              </div>
-
-                              <p className="text-start text-md-center">
-                                <strong>
-                                  <span className="text-muted">{item.qty}</span>{" "}
-                                  x ${item.price}
-                                </strong>
-                              </p>
-                            </div>
-                          </div>
-
-                          <hr className="my-4" />
-                        </div>
-                      );
-                    })}
+                    {state.map((item) => (
+                      <CartItem
+                        key={item.id}
+                        item={item}
+                        onAdd={addItem}
+                        onRemove={removeItem}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
