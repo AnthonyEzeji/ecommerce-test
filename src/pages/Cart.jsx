@@ -5,25 +5,60 @@ import { addCart, delCart } from "../redux/action";
 import { Link } from "react-router-dom";
 
 const CartItem = ({ item, onAdd, onRemove }) => (
-  <div className="cart-item-card p-3 mb-4 bg-white rounded-3 shadow-sm d-flex align-items-center">
-    <div className="me-3 flex-shrink-0 d-flex align-items-center justify-content-center" style={{ width: 110, height: 90, background: '#f8fafc', borderRadius: '12px' }}>
+  <div className="cart-item-card p-3 mb-4 bg-white rounded-3 shadow-sm d-flex flex-column flex-md-row align-items-center align-items-md-start">
+    <div
+      className="d-flex align-items-center justify-content-center mb-3 mb-md-0"
+      style={{
+        width: 110,
+        height: 90,
+        background: '#f8fafc',
+        borderRadius: '12px',
+        flexShrink: 0,
+      }}
+    >
       <img
         src={item.image}
         alt={item.title}
-        style={{ maxWidth: 90, maxHeight: 70, objectFit: 'contain' }}
+        style={{
+          maxWidth: 90,
+          maxHeight: 70,
+          objectFit: 'contain',
+          width: '100%',
+          height: 'auto',
+        }}
       />
     </div>
-    <div className="flex-grow-1">
-      <div className="d-flex justify-content-between align-items-center mb-2">
-        <span className="fw-bold fs-6 text-dark" style={{ maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.title}</span>
-        <span className="fw-bold text-black-50">${Number(item.price).toFixed(2)}</span>
+    <div className="flex-grow-1 w-100 ps-md-3">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-2 text-center text-md-start">
+        <span
+          className="fw-bold fs-6 text-dark mb-2 mb-md-0 text-truncate"
+          style={{
+            maxWidth: 180,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            wordBreak: 'break-word',
+            display: 'block',
+          }}
+        >
+          {item.title}
+        </span>
+        <span className="fw-bold text-black-50">
+          ${Number(item.price).toFixed(2)}
+        </span>
       </div>
-      <div className="d-flex align-items-center gap-2">
-        <button className="btn btn-outline-dark btn-sm px-2 py-1" onClick={() => onRemove(item)}>
+      <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+        <button
+          className="btn btn-outline-dark btn-sm px-2 py-1"
+          onClick={() => onRemove(item)}
+        >
           <i className="fas fa-minus"></i>
         </button>
         <span className="mx-2 fw-semibold fs-6">{item.qty}</span>
-        <button className="btn btn-outline-dark btn-sm px-2 py-1" onClick={() => onAdd(item)}>
+        <button
+          className="btn btn-outline-dark btn-sm px-2 py-1"
+          onClick={() => onAdd(item)}
+        >
           <i className="fas fa-plus"></i>
         </button>
       </div>
