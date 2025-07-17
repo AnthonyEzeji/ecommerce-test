@@ -25,9 +25,17 @@ const Products = () => {
     const getProducts = async () => {
       setLoading(true);
       const response = await fetch("https://fakestoreapi.com/products/");
+      let products = await response.json();
+      // Make the first real product out of stock for demo
+      if (products.length > 0) {
+        products[0] = {
+          ...products[0],
+          rating: { ...products[0].rating, count: 0 },
+        };
+      }
       if (componentMounted.current) {
-        setData(await response.clone().json());
-        setFilter(await response.json());
+        setData(products);
+        setFilter(products);
         setLoading(false);
       }
     };
@@ -109,7 +117,7 @@ const Products = () => {
         </div>
         <div className="product-card-list row justify-content-center">
           {filter.map((product) => {
-            const variants = product.variants || [];
+            const variants = ["Small", "Medium", "Large"];
             const inStock = product.rating?.count > 0;
             return (
               <div key={product.id} className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4 d-flex align-items-stretch">
